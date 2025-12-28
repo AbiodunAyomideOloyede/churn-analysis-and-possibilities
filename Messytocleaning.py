@@ -1,11 +1,6 @@
 import pandas as pd
 df = pd.read_csv("C:/Users/MARCELA/OneDrive/Desktop/Python_Data(project)/big_messy_business_dataset.csv")
 
-# df["Department"] = df["Department"].str.strip().str.capitalize()
-# df["Age"] = pd.to_numeric(df["Age"], errors="coerce")
-# df["Salary"] = pd.to_numeric(df["Salary"].replace({"80k": "80000", "N/A": None}), errors="coerce")
-# df["JoinDate"] = pd.to_datetime(df["JoinDate"], errors="coerce")
-
 # Data Cleaning Starts from here!
 df["CustomerName"] = df["CustomerName"].str.strip().str.title() # Data Cleaning of "CustomerName" column to title case (Words with lower cases and some uppercases)
 df["Age"] = pd.to_numeric(df["Age"].replace({"N/A": None}), errors="coerce").replace(["None", "nan", ""], pd.NA) # Data Cleaning of "Age" column to numbers 
@@ -15,7 +10,7 @@ df["AnnualIncome"] = pd.to_numeric(df["AnnualIncome"].replace({"N/A": "NaN", "75
 df["Gender"] = df["Gender"].replace({"N/A": None, "F": "Female", "M":"Male"}).str.strip().str.title() # Data Cleaning of "Gender" column to numbers to Male and Female (a categorical Data)
 df["Churn"] = (df["Churn"].replace({"Yes": 1, "No": 0}).astype("float")) # Data Cleaning of "Churn" column to binary values (1 and 0)
 
-# for Category_*
+# Data Cleaning of Category_* columns to title case (Words with lower cases and some uppercases)
 category_cols = [col for col in df.columns if col.startswith("Category_")]
 for col in category_cols:
     df[col] = (
@@ -25,15 +20,15 @@ for col in category_cols:
         .str.title()
         .replace({"None": None})
     ) 
-# Data Cleaning of Category_* columns to title case (Words with lower cases and some uppercases)
 
-# For Metric_*
+# Data Cleaning of Metric_* columns to numeric
 Metric_cols = [col for col in df.columns if col.startswith("Metric_")]
 for col in Metric_cols:
     df[col] = pd.to_numeric(df[col].replace({"N/A": None}), errors="coerce") 
     # Data Cleaning of Metric_* columns to numbers 
 
-# For Value_*
+
+# Data Cleaning of Value_* columns to numeric
 Value_cols = [col for col in df.columns if col.startswith("Value_")]
 for col in Value_cols:
     df[col] = pd.to_numeric(df[col].replace({"N/A": None}), errors="coerce") 
@@ -130,16 +125,3 @@ print("Accuracy:", accuracy_score(y_test, y_pred)) # Printing the accuracy of th
 print(classification_report(y_test, y_pred)) # Printing a detailed classification report
 # Modeling ends here
 
-# Additional Analysis (Uncomment to use)
-# df["SignupYear"] = df["SignupDate"].dt.year
-# print(df.groupby("SignupYear").size())
-
-# print(df.info())
-# print(df.head())
-# print(df.isna().count().sort_values(ascending=False).head(70))
-# (df.isna().sum().gt(0).sum())
-
-# print(df)
-# print(df.describe())
-
-# df = df.to_csv("C:/Users/MARCELA/Desktop/Cleaned_Dataset.csv", index=False)
